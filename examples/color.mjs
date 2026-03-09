@@ -53,17 +53,17 @@ export class Color extends Enumeration {
    */
   toHex(includeAlpha = false, alphaPosition = AlphaColorLocation.end) {
     const { r, g, b, a } = this;
-    const base = `#` + [r, g, b]
+    const base = [r, g, b]
         .map(c => c.toString(16).padStart(2, '0')).join('');
 
     if (includeAlpha) {
       if (alphaPosition.key === AlphaColorLocation.start.key)
-        return (a.toString(16) + base);
-      else if (alphaPosition.key === AlphaColorLocation.end)
-        return (base + a.toString(16));
+        return `#${a.toString(16).padStart(2, '0')}${base}`;
+      else if (alphaPosition.key === AlphaColorLocation.end.key)
+        return `#${base}${a.toString(16).padStart(2, '0')}`;
     }
 
-    return base;
+    return `#${base}`;
   }
 
   static {
