@@ -1,6 +1,6 @@
 {
   "name": "@nejs/enumeration",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A reusable no-dependency runtime Enumeration base class",
   "keywords": [
     "esm",
@@ -11,7 +11,9 @@
   "license": "MIT",
   "author": "Brielle Harrison <nyteshade@gmail.com>",
   "type": "module",
-  "main": "src/enumeration.mjs",
+  "exports": {
+    ".": "./src/enumeration.mjs"
+  },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
