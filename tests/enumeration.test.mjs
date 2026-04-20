@@ -467,6 +467,22 @@ describe('iteration', () => {
 })
 
 // ---------------------------------------------------------------------------
+// from()
+// ---------------------------------------------------------------------------
+
+describe('from()', () => {
+  it('find case with basic value equality check', () => {
+    expect(Direction.from('north')).toEqual(Direction.north)
+  })
+
+  it('find case with complex matcher function', () => {
+    expect(Color.from(null, (_, caseValue) => {
+      return caseValue.r >= 128 // color is reddish
+    })).toEqual(Color.red)
+  })
+})
+
+// ---------------------------------------------------------------------------
 // match()
 // ---------------------------------------------------------------------------
 

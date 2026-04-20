@@ -583,6 +583,60 @@ export class Enumeration {
       enumerable: true,
     });
   }
+  
+  /**
+   * Attempts to match or retrieve the enumeration case based on the
+   * value supplied. Alternatively, for complicated sub-value type
+   * matching, an optional matcher function may be supplied that has
+   * the signature:
+   *
+   *   (value, possibleCase, associations? = { }) => boolean
+   *
+   * Where value is the value supplied to the from() method, and the
+   * possibleCase is one of the defined cases on this enumeration.
+   * Both values, and any associations (or an empty object to allow
+   * for destructuring safely) are provided to allow for a custom
+   * programmatic match.
+   *
+   * @example
+   * class Layout extends Enumeration {
+   *   static {
+   *     Layout.define('LEFT', 'LAYOUT_LEFT')
+   *   }
+   * }
+   *
+   * const leftA = Layout.LEFT
+   * const leftB = Layout.from('LAYOUT_LEFT')
+   * leftA === leftB // true
+   *
+   * @example
+   * class ComplexLayout extends Enumeration {
+   *   static {
+   *     ComplexLayout.define('LEFT', {
+   *       alt: 'LAYOUT_LEFT',
+   *       value: 0xDEADBEEF
+   *     })
+   *   }
+   * }
+   *
+   * const leftA = ComplexLayout.LEFT
+   * const leftB = ComplexLayout.from('LAYOUT_LEFT', (value, caseValue) => {
+   *   return value == caseValue.value.alt
+   * })
+   * leftA === leftB // true
+   *
+   */
+  static from(value, matcher = undefined) {
+    for (const [_, caseValue] of this) {
+      if (is.function(matcher) && matcher(value, caseValue))
+        return caseValue
+        
+      else if (value == caseValue.value || value === caseValue.key)
+        return caseValue
+    }
+    
+    return null
+  }
 
   /**
    * Creates an iterator of all {@link Enumeration} derived instances that
